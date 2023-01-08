@@ -28,7 +28,7 @@ public class River {
         for(int i=y;i<16;i++){
             river.add(new Vector2D(x2,i));
         }
-        TreeSet<Vector2D>bridges=new TreeSet<>();
+        TreeSet<Vector2D>bridges= new TreeSet<>(new CompareVector());
         int i=0;
         int index;
         Vector2D v;
@@ -42,12 +42,17 @@ public class River {
             }
         }
         this.bridges=bridges;
-        this.river= new TreeSet<>(river);
+        TreeSet<Vector2D> tmp =new TreeSet<>(new CompareVector());
+        tmp.addAll(river);
+        this.river=tmp;
     }
     public boolean isBridge(Vector2D v){
         return bridges.contains(v);
     }
     public boolean isRiver(Vector2D v){
         return river.contains(v);
+    }
+    public boolean contains(Vector2D v){
+        return river.contains(v)||bridges.contains(v);
     }
 }

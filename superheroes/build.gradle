@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 group 'org.example'
@@ -8,8 +10,17 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-
+javafx {
+    version = "19"
+    modules = [ 'javafx.controls' ]
+}
 dependencies {
+    implementation 'org.openjfx:javafx-base:19'
+    implementation 'org.openjfx:javafx-fxml:19'
+    implementation 'org.openjfx:javafx-graphics:19'
+    implementation 'org.openjfx:javafx-swing:19'
+    implementation 'org.openjfx:javafx-web:19'
+    implementation 'org.openjfx:javafx-media:19'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }

@@ -13,17 +13,11 @@ public class Vector2D {
     }
 
     public boolean precedes(Vector2D other) {
-        if (this.x <= other.x && this.y <= other.y) {
-            return true;
-        }
-        return false;
+        return this.x <= other.x && this.y <= other.y;
     }
 
     public boolean follows(Vector2D other) {
-        if (this.x >= other.x && this.y >= other.y) {
-            return true;
-        }
-        return false;
+        return this.x >= other.x && this.y >= other.y;
     }
 
     public Vector2D add(Vector2D other) {
@@ -31,47 +25,27 @@ public class Vector2D {
     }
 
     public Vector2D subtract(Vector2D other) {
-        Vector2D result = new Vector2D(this.x - other.x, this.y - other.y);
-        return result;
+        return new Vector2D(this.x - other.x, this.y - other.y);
     }
 
     public Vector2D upperRight(Vector2D other) {
         int xmax;
         int ymax;
-        if (this.x >= other.x) {
-            xmax = this.x;
-        } else {
-            xmax = other.x;
-        }
-        if (this.y >= other.y) {
-            ymax = this.y;
-        } else {
-            ymax = other.y;
-        }
-        Vector2D result = new Vector2D(xmax, ymax);
-        return result;
+        xmax = Math.max(this.x, other.x);
+        ymax = Math.max(this.y, other.y);
+        return new Vector2D(xmax, ymax);
     }
 
     public Vector2D lowerLeft(Vector2D other) {
-        int xmin;
-        int ymin;
-        if (this.x <= other.x) {
-            xmin = this.x;
-        } else {
-            xmin = other.x;
-        }
-        if (this.y <= other.y) {
-            ymin = this.y;
-        } else {
-            ymin = other.y;
-        }
-        Vector2D result = new Vector2D(xmin, ymin);
-        return result;
+        int xMin;
+        int yMin;
+        xMin = Math.min(this.x, other.x);
+        yMin = Math.min(this.y, other.y);
+        return new Vector2D(xMin, yMin);
     }
 
     public Vector2D opposite() {
-        Vector2D result = new Vector2D(-this.x, -this.y);
-        return result;
+        return new Vector2D(-this.x, -this.y);
     }
 
     @Override

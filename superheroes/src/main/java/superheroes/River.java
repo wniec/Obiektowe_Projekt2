@@ -14,12 +14,12 @@ public class River {
         Random rand= new Random();
         ArrayList<Vector2D> river = new ArrayList<>();
         int x1= rand.nextInt(8)+4;
-        int y= rand.nextInt(16);
+        int y= rand.nextInt(14)+1;
         int x2=x1;
         while(x2==x1){
             x2= rand.nextInt(8)+4;
         }
-        for(int i=0;i<y;i++){
+        for(int i=0;i<=y;i++){
             river.add(new Vector2D(x1,i));
         }
         for(int i=0;i<abs(x1-x2);i++){
@@ -35,7 +35,7 @@ public class River {
         while(i<4){
             index=rand.nextInt(river.size());
             v=river.get(index);
-            if(!bridges.contains(v)){
+            if(!bridges.contains(v)&&((v.x!=x1&&v.x!=x2))||v.y!=y){
                 bridges.add(v);
                 river.remove(v);
                 i++;

@@ -1,5 +1,4 @@
 package superheroes;
-import java.util.*;
 import java.util.Comparator;
 public class CompareVector implements Comparator<Vector2D>{
     @Override

@@ -1,5 +1,6 @@
 package superheroes.characters;
 
+import javafx.scene.image.Image;
 import superheroes.Problem;
 import superheroes.ProblemType;
 
@@ -7,7 +8,11 @@ public class SuperInformatician extends AbstractSuperhero {
     public SuperInformatician(){
         this.isBusy=false;
         this.maxDistance=3;
+        this.availableDistance=3;
         this.hasHelicopter=false;
+    }
+    public Image getImage(){
+        return new Image("file:src/main/resources/superheroes/hacker.png");
     }
     @Override
     public int getTime(Problem problem) {

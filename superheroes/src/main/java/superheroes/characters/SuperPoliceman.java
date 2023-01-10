@@ -1,5 +1,6 @@
 package superheroes.characters;
 
+import javafx.scene.image.Image;
 import superheroes.Problem;
 import superheroes.ProblemType;
 
@@ -7,8 +8,13 @@ public class SuperPoliceman extends AbstractSuperhero{
     public SuperPoliceman(){
         this.isBusy=false;
         this.maxDistance=4;
+        this.availableDistance=4;
         this.hasHelicopter=false;
     }
+    public Image getImage(){
+        return new Image("file:src/main/resources/superheroes/policeman.png");
+    }
+
     @Override
     public int getTime(Problem problem) {
         ProblemType problemType=problem.type;

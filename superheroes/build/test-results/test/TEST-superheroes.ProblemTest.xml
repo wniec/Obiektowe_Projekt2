@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="superheroes.ProblemTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-10T11:05:53" hostname="DESKTOP-N7BOHMI" time="0.027">
+<testsuite name="superheroes.ProblemTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-11T18:39:47" hostname="DESKTOP-N7BOHMI" time="0.045">
   <properties/>
-  <testcase name="getTimeTest()" classname="superheroes.ProblemTest" time="0.027"/>
+  <testcase name="getTimeTest()" classname="superheroes.ProblemTest" time="0.045"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

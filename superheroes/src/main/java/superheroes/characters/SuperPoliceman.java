@@ -25,4 +25,7 @@ public class SuperPoliceman extends AbstractSuperhero{
             default -> {return problem.getDaysToComplete();}
         }
     }
+    public String toString(){
+        return "SELECTED HERO: SUPERPOLICEMAN";
+    }
 }

@@ -23,4 +23,7 @@ public class SuperWarrior extends  AbstractSuperhero {
             default -> {return problem.getDaysToComplete();}
         }
     }
+    public String toString(){
+        return "SELECTED HERO: SUPERWARRIOR";
+    }
 }

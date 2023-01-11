@@ -12,16 +12,18 @@ public class Engine implements Runnable{
     int rounds=0;
     private final ArrayList<Integer>problematicRounds;
     public final CityMap map;
+    private final ArrayList <Problem> problemsToRemove;
+    private boolean gameOver;
     private int hearts;
     private int problemsForNow=4;
     private boolean blackmailingChosen=false;
-    private AbstractSuperhero[] heroes=new AbstractSuperhero[]{new SuperInformatician(),new SuperFireman(),new SuperWarrior(),new SuperPoliceman()};
+    private final AbstractSuperhero[] heroes=new AbstractSuperhero[]{new SuperInformatician(),new SuperFireman(),new SuperWarrior(),new SuperPoliceman()};
     private final ArrayList<Problem> problems=new ArrayList<>();
     public Engine(CityMap map){
+        this.problemsToRemove = new ArrayList<>();
         this.map=map;
         this.hearts=3;
         problematicRounds=getProblems();
-        Problem problem;
         for(int i =0;i<min(problematicRounds.size(),3);i++){
             chooseProblem();
         }
@@ -38,6 +40,7 @@ public class Engine implements Runnable{
         for(Problem problem : problems){
             problem.tick();
         }
+        clearProblems();
         rounds++;
         if(rounds==problematicRounds.get(problemsForNow)){
             chooseProblem();
@@ -47,9 +50,20 @@ public class Engine implements Runnable{
             hero.tick();
         }
     }
-    public void removeProblem(Problem problem){this.problems.remove(problem);}
-    public void gameOver(){}
+    public void removeProblem(Problem problem){this.problemsToRemove.add(problem);}
+    public void clearProblems(){
+        for (Problem problem:problemsToRemove){
+            this.problems.remove(problem);
+            map.removeProblem(problem);
+        }
+        problemsToRemove.clear();
+    }
+    public void gameOver(){this.gameOver=true;}
+    public boolean isGameOver(){return this.gameOver;}
     public void addHeart(){hearts++;}
+
+    public int getHearts() {return hearts;}
+
     public void removeHeart(){
         hearts--;
         if (hearts==0)
@@ -90,4 +104,5 @@ public class Engine implements Runnable{
     public int getDay() {
         return rounds;
     }
+
 }

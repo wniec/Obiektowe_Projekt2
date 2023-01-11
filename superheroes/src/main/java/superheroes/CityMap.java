@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import superheroes.characters.AbstractSuperhero;
 
-import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class CityMap {
@@ -15,8 +14,8 @@ public class CityMap {
     private boolean isRendered;
     private HashMap<Vector2D,Integer> render=new HashMap<>();
     private final ArrayList<AbstractStaticObject> staticObjects = new ArrayList<>();
-    private final ArrayList<AbstractSuperhero> heroes = new ArrayList<>();
-    private final TreeSet<Vector2D> problems = new TreeSet<>(new CompareVector());
+    private ArrayList<AbstractSuperhero> heroes = new ArrayList<>();
+    private final TreeSet<Vector2D> problemPositions = new TreeSet<>(new CompareVector());
     private final HashMap<Vector2D,Problem> activeProblems = new HashMap<>();
 
     public CityMap() {
@@ -75,7 +74,7 @@ public class CityMap {
     }
     public StackPane getStackPane(Vector2D position){
         Image background = getBackgroundImage(position);
-        AbstractSuperhero hero =heroAt(position);
+        ArrayList<AbstractSuperhero> heroes = heroesAt(position);
         Problem problem = problemAt(position);
         ImageView backgroundView=new ImageView();
         backgroundView.setFitWidth(40);
@@ -90,8 +89,8 @@ public class CityMap {
             problemView.setImage(problemImage);
             stackPane.getChildren().add(problemView);
         }
-        if(hero!=null){
-            Image heroImage = hero.getImage();
+        if(heroes.size()>0){
+            Image heroImage = heroes.get(0).getImage();
             ImageView heroView=new ImageView();
             heroView.setFitWidth(40);
             heroView.setFitHeight(40);
@@ -112,27 +111,33 @@ public class CityMap {
     }
     private void placeObject(AbstractStaticObject object) {this.staticObjects.add(object);}
     public void addProblem(Problem problem){this.activeProblems.put(problem.position,problem);}
+    public void removeProblem(Problem problem){this.activeProblems.remove(problem.position);}
     public Problem problemAt(Vector2D position){return activeProblems.get(position);}
     public Vector2D getProblemPosition(){
         Vector2D v;
         Random rand = new Random();
         v=new Vector2D(rand.nextInt(16), rand.nextInt(16));
-        while(cannotBePutHere(v) || (objectHere(v) instanceof Obstacle)||problems.contains(v)){
+        while(cannotBePutHere(v) || (objectHere(v) instanceof Obstacle)|| problemPositions.contains(v)){
             v=new Vector2D(rand.nextInt(16), rand.nextInt(16));
         }
-        addProblem(v);
+        addProblemPosition(v);
         return v;
     }
-    public AbstractSuperhero heroAt(Vector2D position){
+    public ArrayList<AbstractSuperhero> heroesAt(Vector2D position){
+        ArrayList<AbstractSuperhero> heroesHere = new ArrayList<>();
         for(AbstractSuperhero hero:heroes){
-            if(hero.getPosition().equals(position)){
-                return hero;
-            };
+            if(hero.getPosition().equals(position))
+                heroesHere.add(hero);
+
         }
-        return null;
+        return heroesHere;
     }
 
-    private void addProblem(Vector2D v){this.problems.add(v);}
+    private void addProblemPosition(Vector2D v){this.problemPositions.add(v);}
+    public void heroMoved(AbstractSuperhero hero){
+        this.heroes.remove(hero);
+        this.heroes.add(hero);
+    }
     public void addHero(AbstractSuperhero hero){
         Random rand= new Random();
         Vector2D v=new Vector2D(rand.nextInt(16), rand.nextInt(16) );

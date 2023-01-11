@@ -2,11 +2,13 @@ package superheroes;
 
 
 import javafx.scene.image.Image;
+import superheroes.characters.AbstractSuperhero;
 
 public class Problem {
     public final ProblemType type;
     private final Engine engine;
     public final Vector2D position;
+    private AbstractSuperhero hero;
     private boolean isDealtWith;
     private int daysToEnd,daysToComplete;
     public Problem(ProblemType type,Engine engine,CityMap map) {
@@ -40,28 +42,28 @@ public class Problem {
         this.engine.removeProblem(this);
     }
     public void fail(){
-        switch(this.type){
-            case Fire:
-                if(this.position.equals(engine.map.townHall.position)){
-                    engine.removeHeart();
-                    engine.removeHeart();
-                }
-                else if(this.position.equals(engine.map.heroesCentre.position))
-                    engine.gameOver();
-                else
-                    engine.removeHeart();
-            case Blackmailing:
-                return;
-            default:
+        if(this.type!=ProblemType.Blackmailing){
+            if(this.position.equals(engine.map.townHall.position)){
                 engine.removeHeart();
-
+                engine.removeHeart();
+            }
+            else if(this.position.equals(engine.map.heroesCentre.position))
+                engine.gameOver();
+            else
+                engine.removeHeart();
         }
+        if (this.hero!=null)
+            hero.free();
+    }
+    public void setHero(AbstractSuperhero hero){
+        this.isDealtWith=true;
+        this.hero=hero;
     }
     public void success(){
         if (this.type == ProblemType.Blackmailing) {
             engine.addHeart();
         }
-        engine.removeHeart();
+        this.hero.free();
     }
     public Image getImage(){
         switch(this.type){

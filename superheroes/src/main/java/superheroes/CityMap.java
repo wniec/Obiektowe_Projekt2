@@ -12,6 +12,7 @@ public class CityMap {
     public final SpecialBuilding heroesCentre;
     public final River river;
     private boolean isRendered;
+    private boolean choosingHelicopter;
     private HashMap<Vector2D,Integer> render=new HashMap<>();
     private final ArrayList<AbstractStaticObject> staticObjects = new ArrayList<>();
     private ArrayList<AbstractSuperhero> heroes = new ArrayList<>();
@@ -20,6 +21,7 @@ public class CityMap {
 
     public CityMap() {
         this.river = new River();
+        choosingHelicopter=false;
         this.isRendered = false;
         Obstacle o;
         for (int i = 0; i < 8; i++) {
@@ -32,6 +34,7 @@ public class CityMap {
         }
         this.townHall=new SpecialBuilding(true,this);
         this.heroesCentre=new SpecialBuilding(false,this);
+        AbstractSuperhero.setCentrePosition(heroesCentre.getPosition());
     }
 
     public AbstractStaticObject objectHere(Vector2D position) {
@@ -48,7 +51,7 @@ public class CityMap {
     }
     public Image getBackgroundImage(Vector2D position){
         String path;
-        if(this.render.containsKey(position))
+        if(this.render.containsKey(position)||choosingHelicopter)
             path="file:src/main/resources/chosen/";
         else
             path="file:src/main/resources/";
@@ -188,4 +191,8 @@ public class CityMap {
         return this.isRendered;
     }
     public HashMap<Vector2D,Integer> getRender(){return this.render;}
+
+    public void setHelicopterChoice(boolean choosingHelicopter) {
+        this.choosingHelicopter = choosingHelicopter;
+    }
 }

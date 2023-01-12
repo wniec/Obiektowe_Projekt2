@@ -9,7 +9,7 @@ public class SuperPoliceman extends AbstractSuperhero{
         this.isBusy=false;
         this.maxDistance=4;
         this.availableDistance=4;
-        this.hasHelicopter=false;
+        this.helicopterDays=0;
     }
     public Image getImage(){
         return new Image("file:src/main/resources/superheroes/policeman.png");

@@ -16,9 +16,9 @@ public abstract class AbstractSuperhero {
     public Problem problem;
     public abstract Image getImage();
     protected int maxDistance;
+    static Vector2D centrePosition;
     protected int availableDistance;
     protected boolean isBusy;
-    protected boolean hasHelicopter;
     protected Vector2D position;
     protected int helicopterDays;
     public boolean cannotGoTo(Vector2D position,CityMap map) {
@@ -44,44 +44,62 @@ public abstract class AbstractSuperhero {
     public abstract String toString();
 
     public int getAvailableDistance() {
-        if (isBusy)
+        if(hasHelicopter())
             return 0;
         return availableDistance;
     }
 
-    public boolean HasHelicopter() {
-        return hasHelicopter;
+    public boolean hasHelicopter() {
+        return helicopterDays>0;
+    }
+    public void setHelicopter() {
+        helicopterDays=2;
     }
     public void tick(){
         availableDistance=maxDistance;
         helicopterDays--;
+        if(this.helicopterDays==0){
+            this.position=centrePosition;
+        }
     }
     public void setPosition(Vector2D v){this.position=v;}
     public Vector2D getPosition(){return this.position;}
 
     public void move(Vector2D v,int steps,CityMap map) {
-        Problem problem =map.problemAt(v);
-        if(problem!=null){
-            this.isBusy=true;
-            this.problem=problem;
-            problem.setHero(this);
+        if(!this.position.equals(v)){
+            if(this.problem!=null){
+                this.problem.abandon();
+                this.problem=null;
+                this.isBusy=false;
+            }
+            Problem problem =map.problemAt(v);
+            if(problem!=null){
+                this.isBusy=true;
+                this.problem=problem;
+                problem.setHero(this);
+            }
+            this.position=v;
+            this.availableDistance-=steps;
         }
-        this.position=v;
-        this.availableDistance-=steps;
         map.heroMoved(this);
     }
-    public Scene getInfoScene(){
+    public void problemEnded(){
+        this.problem=null;
+    }
+    public VBox getInfoBox(){
         Label heroLabel= new Label(this.toString());
         HBox heroBox = new HBox(heroLabel);
         heroBox.setAlignment(Pos.CENTER_LEFT);
         Label problemLabel = new Label("current problem:\t");
         HBox problem = new HBox(problemLabel);
         problem.setAlignment(Pos.CENTER_LEFT);
-        if (this.isBusy){
+        if (this.problem!=null){
+            Label lengthLabel=new Label("working currently for "+this.problem.getDaysSpent()+" Days");
             ImageView problemView = new ImageView(this.problem.getImage());
             problemView.setFitWidth(40);
             problemView.setFitHeight(40);
             problem.getChildren().add(problemView);
+            problem.getChildren().add(lengthLabel);
         }
         Label availableMovesLabel = new Label("available moves:\t");
         HBox availableMoves =new HBox(availableMovesLabel);
@@ -107,10 +125,15 @@ public abstract class AbstractSuperhero {
         problem.setMinHeight(40);
         availableMoves.setMinHeight(40);
         maxMoves.setMinHeight(40);
-        VBox vBox= new VBox(heroLabel,problem,availableMoves,maxMoves);
-        return new Scene(vBox,320,300);
+        return new VBox(heroLabel,problem,availableMoves,maxMoves);
     }
     //public abstract VBox getCharacteristics();
-    public void free(){this.isBusy=false;}
+    public void free(){
+        this.isBusy=false;
+        this.problem=null;
+    }
     public boolean isBusy(){return this.isBusy;}
+    public static void setCentrePosition(Vector2D position) {
+        centrePosition=position;
+    }
 }

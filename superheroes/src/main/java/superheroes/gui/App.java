@@ -29,7 +29,8 @@ public class App extends Application{
     private GridPane gridPane;
     private Stage stage;
     private HBox hbox;
-    private final Stage heroStage=new Stage();;
+    private boolean helicopterChoice;
+    private VBox heroBox=new VBox(new Label("NO SUPERHERO SELECTED"));
 
     public void anythingChanged() {
         System.out.println("anything");
@@ -44,7 +45,8 @@ public class App extends Application{
                     setHBox();
                     drawMap();
                     VBox vbox = new VBox(hbox, gridPane);
-                    Scene scene = new Scene(vbox, 640, 660);
+                    hbox=new HBox(vbox,heroBox);
+                    Scene scene = new Scene(hbox, 940, 660);
                     stage.setScene(scene);
                 }
             } catch (FileNotFoundException e) {
@@ -65,7 +67,7 @@ public class App extends Application{
         gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.add(label,0,0);
         label.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(gridPane,640,660);
+        Scene scene=new Scene(gridPane,940,660);
         gridPane.setAlignment(Pos.CENTER);
         this.stage.setScene(scene);
     }
@@ -78,7 +80,7 @@ public class App extends Application{
         gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.add(label,0,0);
         label.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(gridPane,640,660);
+        Scene scene=new Scene(gridPane,940,660);
         gridPane.setAlignment(Pos.CENTER);
         this.stage.setScene(scene);
     }
@@ -90,7 +92,8 @@ public class App extends Application{
         drawMap();
         setHBox();
         VBox vbox = new VBox(hbox, gridPane);
-        Scene scene = new Scene(vbox, 640, 660);
+        hbox=new HBox(vbox,heroBox);
+        Scene scene = new Scene(hbox, 940, 660);
         this.stage.setScene(scene);
         this.stage.show();
     }
@@ -122,6 +125,7 @@ public class App extends Application{
         addHearts(hbox);
         startButton.setOnAction(event -> {
             engine.nextDay();
+            noHeroSelected();
             anythingChanged();
         });
     }
@@ -141,30 +145,52 @@ public class App extends Application{
         }
     }
     public void chooseAction(Vector2D v){
-        if(this.map.isRendered()){
-            HashMap<Vector2D,Integer> render =map.getRender();
-            if(render.containsKey(v))
-                chosenHero.move(v,render.get(v),map);
-            map.deleteRender();
-            anythingChanged();
-            showHero();
+        if(!helicopterChoice){
+            if(this.map.isRendered()){
+                HashMap<Vector2D,Integer> render =map.getRender();
+                if(render.containsKey(v))
+                    chosenHero.move(v,render.get(v),map);
+                map.deleteRender();
+
+            }
+            else{
+                if(this.map.heroesAt(v).size()>0){
+                    chosenHero=map.heroesAt(v).get(0);
+                    map.render(v,chosenHero);
+                }
+                else if (this.map.heroesCentre.getPosition().equals(v)){
+                    map.setHelicopterChoice(true);
+                    helicopterChoice=true;
+                }
+                else{
+                    chosenHero=null;
+                    map.setHelicopterChoice(false);
+                    helicopterChoice=false;
+                }
+
+            }
         }
         else{
             if(this.map.heroesAt(v).size()>0){
                 chosenHero=map.heroesAt(v).get(0);
-                showHero();
-                map.render(v,chosenHero);
-                anythingChanged();
+                chosenHero.setHelicopter();
 
             }
+            helicopterChoice=false;
+            map.setHelicopterChoice(false);
         }
+        showHero();
+        anythingChanged();
     }
     public void showHero(){
-        if (!this.heroStage.isShowing()){
-            heroStage.show();
-            heroStage.setTitle("Superheroes Info");
-        }
-        Scene scene=chosenHero.getInfoScene();
-        heroStage.setScene(scene);
+        if(chosenHero!=null)
+            heroBox=chosenHero.getInfoBox();
+        else
+            noHeroSelected();
+    }
+    public void noHeroSelected(){
+        map.deleteRender();
+        chosenHero=null;
+        heroBox=new VBox(new Label("NO SUPERHERO SELECTED"));
     }
 }

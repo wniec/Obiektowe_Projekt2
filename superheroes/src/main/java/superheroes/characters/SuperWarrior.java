@@ -9,7 +9,7 @@ public class SuperWarrior extends  AbstractSuperhero {
         this.isBusy=false;
         this.maxDistance=6;
         this.availableDistance=6;
-        this.hasHelicopter=false;
+        this.helicopterDays=0;
     }
     public Image getImage(){
         return new Image("file:src/main/resources/superheroes/warrior.png");

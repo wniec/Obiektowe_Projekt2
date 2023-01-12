@@ -10,13 +10,16 @@ public class Problem {
     public final Vector2D position;
     private AbstractSuperhero hero;
     private boolean isDealtWith;
-    private int daysToEnd,daysToComplete;
+    private int daysToEnd;
+    private int daysToComplete;
+    private int daysSpent;
     public Problem(ProblemType type,Engine engine,CityMap map) {
         this.type = type;
         this.isDealtWith=false;
         this.daysToComplete = type.getBaseTime();
         this.position=map.getProblemPosition();
         this.engine=engine;
+        this.daysSpent=0;
         switch (this.type) {
             case SuperVillain, Blackmailing -> daysToEnd = daysToComplete * 2;
             default -> daysToEnd = daysToComplete * 3;
@@ -24,10 +27,11 @@ public class Problem {
     }
     public void tick(){
         if(isDealtWith)
-            daysToComplete--;
-        if(daysToComplete==0)
+            daysSpent++;
+        if(daysToComplete==daysSpent)
         {
             this.success();
+            this.hero.problemEnded();
             this.remove();
             return;
         }
@@ -35,12 +39,18 @@ public class Problem {
         if(daysToEnd==0)
         {
             this.fail();
+            this.hero.problemEnded();
             this.remove();
         }
     }
     private void remove(){
         this.engine.removeProblem(this);
     }
+    public void abandon(){
+        this.daysSpent=0;
+        this.hero=null;
+    }
+
     public void fail(){
         if(this.type!=ProblemType.Blackmailing){
             if(this.position.equals(engine.map.townHall.position)){
@@ -77,6 +87,9 @@ public class Problem {
     }
     public int getDaysToEnd(){
         return daysToEnd;
+    }
+    public int getDaysSpent(){
+        return daysSpent;
     }
 
     public int getDaysToComplete() {

@@ -9,7 +9,7 @@ public class SuperInformatician extends AbstractSuperhero {
         this.isBusy=false;
         this.maxDistance=3;
         this.availableDistance=3;
-        this.hasHelicopter=false;
+        this.helicopterDays=0;
     }
     public Image getImage(){
         return new Image("file:src/main/resources/superheroes/hacker.png");

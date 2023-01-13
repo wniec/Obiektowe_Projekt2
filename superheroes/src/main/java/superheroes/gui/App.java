@@ -33,12 +33,11 @@ public class App extends Application{
     private VBox heroBox=new VBox(new Label("NO SUPERHERO SELECTED"));
 
     public void anythingChanged() {
-        System.out.println("anything");
             try {
                 if(engine.isGameOver()){
                     gameOver();
                 }
-                if(engine.getDay()==60){
+                else if(engine.getDay()==60){
                     gameWon();
                 }
                 else{
@@ -46,7 +45,7 @@ public class App extends Application{
                     drawMap();
                     VBox vbox = new VBox(hbox, gridPane);
                     hbox=new HBox(vbox,heroBox);
-                    Scene scene = new Scene(hbox, 940, 660);
+                    Scene scene = new Scene(hbox, 1000, 660);
                     stage.setScene(scene);
                 }
             } catch (FileNotFoundException e) {
@@ -67,7 +66,7 @@ public class App extends Application{
         gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.add(label,0,0);
         label.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(gridPane,940,660);
+        Scene scene=new Scene(gridPane,1000,660);
         gridPane.setAlignment(Pos.CENTER);
         this.stage.setScene(scene);
     }
@@ -80,7 +79,7 @@ public class App extends Application{
         gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         gridPane.add(label,0,0);
         label.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(gridPane,940,660);
+        Scene scene=new Scene(gridPane,1000,660);
         gridPane.setAlignment(Pos.CENTER);
         this.stage.setScene(scene);
     }
@@ -93,7 +92,7 @@ public class App extends Application{
         setHBox();
         VBox vbox = new VBox(hbox, gridPane);
         hbox=new HBox(vbox,heroBox);
-        Scene scene = new Scene(hbox, 940, 660);
+        Scene scene = new Scene(hbox, 1000, 660);
         this.stage.setScene(scene);
         this.stage.show();
     }
@@ -151,7 +150,6 @@ public class App extends Application{
                 if(render.containsKey(v))
                     chosenHero.move(v,render.get(v),map);
                 map.deleteRender();
-
             }
             else{
                 if(this.map.heroesAt(v).size()>0){
@@ -167,14 +165,12 @@ public class App extends Application{
                     map.setHelicopterChoice(false);
                     helicopterChoice=false;
                 }
-
             }
         }
         else{
             if(this.map.heroesAt(v).size()>0){
                 chosenHero=map.heroesAt(v).get(0);
                 chosenHero.setHelicopter();
-
             }
             helicopterChoice=false;
             map.setHelicopterChoice(false);
@@ -191,6 +187,8 @@ public class App extends Application{
     public void noHeroSelected(){
         map.deleteRender();
         chosenHero=null;
-        heroBox=new VBox(new Label("NO SUPERHERO SELECTED"));
+        Label label = new Label("NO SUPERHERO SELECTED");
+        heroBox=new VBox(label);
+
     }
 }

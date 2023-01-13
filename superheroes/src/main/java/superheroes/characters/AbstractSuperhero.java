@@ -125,9 +125,12 @@ public abstract class AbstractSuperhero {
         problem.setMinHeight(40);
         availableMoves.setMinHeight(40);
         maxMoves.setMinHeight(40);
-        return new VBox(heroLabel,problem,availableMoves,maxMoves);
+        HBox description =new HBox((this.characteristics()));
+        description.setAlignment(Pos.CENTER_LEFT);
+        description.setSpacing(20);
+        return new VBox(heroLabel,problem,availableMoves,maxMoves,description);
     }
-    //public abstract VBox getCharacteristics();
+    public abstract Label characteristics();
     public void free(){
         this.isBusy=false;
         this.problem=null;

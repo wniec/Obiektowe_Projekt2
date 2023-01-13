@@ -23,6 +23,7 @@ public class Engine implements Runnable{
         this.problemsToRemove = new ArrayList<>();
         this.map=map;
         this.hearts=3;
+        gameOver=false;
         problematicRounds=getProblems();
         for(int i =0;i<min(problematicRounds.size(),3);i++){
             chooseProblem();
@@ -58,7 +59,8 @@ public class Engine implements Runnable{
         }
         problemsToRemove.clear();
     }
-    public void gameOver(){this.gameOver=true;}
+    public void gameOver(){
+        this.gameOver=true;}
     public boolean isGameOver(){return this.gameOver;}
     public void addHeart(){hearts++;}
 
@@ -66,7 +68,7 @@ public class Engine implements Runnable{
 
     public void removeHeart(){
         hearts--;
-        if (hearts==0)
+        if (hearts<=0)
             gameOver();
     }
     public void chooseProblem(){

@@ -11,7 +11,7 @@ public class Problem {
     private AbstractSuperhero hero;
     private boolean isDealtWith;
     private int daysToEnd;
-    private int daysToComplete;
+    private final int daysToComplete;
     private int daysSpent;
     public Problem(ProblemType type,Engine engine,CityMap map) {
         this.type = type;
@@ -39,7 +39,9 @@ public class Problem {
         if(daysToEnd==0)
         {
             this.fail();
-            this.hero.problemEnded();
+            if (this.hero!=null){
+                this.hero.problemEnded();
+            }
             this.remove();
         }
     }

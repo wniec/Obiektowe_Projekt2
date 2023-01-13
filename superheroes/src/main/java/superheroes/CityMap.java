@@ -15,7 +15,7 @@ public class CityMap {
     private boolean choosingHelicopter;
     private HashMap<Vector2D,Integer> render=new HashMap<>();
     private final ArrayList<AbstractStaticObject> staticObjects = new ArrayList<>();
-    private ArrayList<AbstractSuperhero> heroes = new ArrayList<>();
+    private final ArrayList<AbstractSuperhero> heroes = new ArrayList<>();
     private final TreeSet<Vector2D> problemPositions = new TreeSet<>(new CompareVector());
     private final HashMap<Vector2D,Problem> activeProblems = new HashMap<>();
 
@@ -67,8 +67,11 @@ public class CityMap {
                 return new Image(path+"swamp.png");
             else if((aso instanceof SpecialBuilding)&&((SpecialBuilding)aso).isTownHall)
                 return new Image(path+"townHall.png");
-            else if((aso instanceof SpecialBuilding)&&!((SpecialBuilding)aso).isTownHall)
+            else if((aso instanceof SpecialBuilding)&&!((SpecialBuilding)aso).isTownHall){
+                if(choosingHelicopter)
+                    return new Image(path+"helicopter.png");
                 return new Image(path+"superheroesCentre.png");
+            }
             else
                 return new Image(path+"empty.png");
         }

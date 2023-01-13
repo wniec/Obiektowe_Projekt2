@@ -1,5 +1,6 @@
 package superheroes.characters;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import superheroes.*;
 
@@ -42,5 +43,8 @@ public class SuperFireman extends AbstractSuperhero{
     }
     public String toString(){
         return "SELECTED HERO: SUPERFIREMAN";
+    }
+    public Label characteristics(){
+        return new Label("\nCan pass river anywhere\n\nExtinguishes Fire 2 days faster");
     }
 }

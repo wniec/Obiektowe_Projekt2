@@ -1,5 +1,6 @@
 package superheroes.characters;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import superheroes.Problem;
 import superheroes.ProblemType;
@@ -27,5 +28,8 @@ public class SuperInformatician extends AbstractSuperhero {
     }
     public String toString(){
         return "SELECTED HERO: SUPERINFORMATICIAN";
+    }
+    public Label characteristics(){
+        return new Label("\nSolves Technical issues in 1 day\n\nSolves criminal mystery 1 day faster\n\nExtinguishes fire 1 day longer\n\nDefeats super-villain 2 days longer");
     }
 }

@@ -10,9 +10,17 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+application {
+    getMainClass().set('superheroes.Main')
+}
 javafx {
     version = "19"
     modules = [ 'javafx.controls' ]
+}
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(18))
+    }
 }
 dependencies {
     implementation 'org.openjfx:javafx-base:19'

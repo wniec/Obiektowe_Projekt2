@@ -25,6 +25,20 @@ public class Problem {
             default -> daysToEnd = daysToComplete * 3;
         }
     }
+    public Problem(Engine engine,CityMap map,boolean isTownHall) {
+        this.type = ProblemType.Fire;
+        this.isDealtWith=false;
+        this.daysToComplete = type.getBaseTime();
+        if(isTownHall){
+            this.position=map.townHall.getPosition();
+        }
+        else{
+            this.position=map.heroesCentre.getPosition();
+        }
+        this.engine=engine;
+        this.daysSpent=0;
+        daysToEnd = daysToComplete * 3;
+    }
     public void tick(){
         if(isDealtWith)
             daysSpent++;

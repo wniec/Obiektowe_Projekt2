@@ -17,6 +17,7 @@ public class Engine implements Runnable{
     private int hearts;
     private int problemsForNow=4;
     private boolean blackmailingChosen=false;
+    private boolean centreFireChosen=false,townHallFireChosen=false;
     private final AbstractSuperhero[] heroes=new AbstractSuperhero[]{new SuperInformatician(),new SuperFireman(),new SuperWarrior(),new SuperPoliceman()};
     private final ArrayList<Problem> problems=new ArrayList<>();
     public Engine(CityMap map){
@@ -75,13 +76,23 @@ public class Engine implements Runnable{
         Problem problem;
         Random random=new Random();
         problem=new Problem(ProblemType.randomProblem(),this,map);
-        if (!blackmailingChosen&&problem.type != ProblemType.CriminalMystery){
-            int chance=random.nextInt(100);
+        //Mechanika losowania problemu, którym może być szataż;
+        //Zwiększam prawdopodobieństwo pożaru w ratuszu i w centrum superbohaterów
+        if (!blackmailingChosen&&problem.type != ProblemType.Fire){
+            int chance=random.nextInt(120);
             if(chance<rounds)
             {
                 problem = new Problem(ProblemType.Blackmailing,this,map);
                 blackmailingChosen=true;
             }
+        }
+        else if(problem.type==ProblemType.Fire&&!townHallFireChosen&&rounds>15){
+            problem = new Problem(this,map,false);
+            townHallFireChosen=true;
+        }
+        else if(problem.type==ProblemType.Fire&&!centreFireChosen&&rounds>30){
+            problem = new Problem(this,map,true);
+            centreFireChosen=true;
         }
         problems.add(problem);
         map.addProblem(problem);
